@@ -8,7 +8,14 @@
     "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "lib": [
+      "dom",
+      "es6",
+      "es7",
+      "esnext",
+      "esnext.asynciterable"
+    ]
   },
   "exclude": [
     "node_modules"

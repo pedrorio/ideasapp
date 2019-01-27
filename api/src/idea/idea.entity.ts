@@ -8,5 +8,5 @@ export class IdeaEntity {
   
   @Column("text") idea: string;
   
-  @Column("text") descriptions: string;
+  @Column("text") description: string;
 }
