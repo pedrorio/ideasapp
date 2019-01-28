@@ -4,7 +4,7 @@ import { IdeaService } from "./idea.service";
 import { IdeaDTO } from "./idea.dto";
 import { ValidatorPipe } from "../shared/validator.pipe";
 
-@Controller("idea")
+@Controller("ideas")
 export class IdeaController {
   private logger = new Logger("IdeaController");
   constructor(private ideaService: IdeaService) {

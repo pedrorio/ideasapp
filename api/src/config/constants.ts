@@ -25,6 +25,7 @@ export const twitterConsumerKey = process.env.TWITTER_CONSUMER_KEY;
 export const twitterConsumerSecret = process.env.TWITTER_CONSUMER_SECRET;
 
 export const sessionSecret = process.env.SESSION_SECRET as string;
+export const jwtSecret = process.env.JWT_SECRET as string;
 
 // export const redisConfig: RedisOptions = {
 //   port: parseInt(process.env.REDIS_PORT as string, 10),
