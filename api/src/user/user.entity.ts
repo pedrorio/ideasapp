@@ -1,16 +1,28 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 import { compare, hash } from "bcryptjs";
-import { Exclude, Expose } from "class-transformer";
 import * as jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/constants";
+import { IdeaEntity } from "../idea/idea.entity";
 
 @Entity("user")
 export class UserEntity {
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @CreateDateColumn()
   created: Date;
+
+  @UpdateDateColumn()
+  updated: Date;
 
   @Column({
     type: "text",
@@ -18,7 +30,6 @@ export class UserEntity {
   })
   username: string;
 
-  @Exclude()
   @Column("text")
   password: string;
 
@@ -27,26 +38,19 @@ export class UserEntity {
     this.password = await hash(this.password, 10);
   }
 
-  constructor(partial: Partial<UserEntity>) {
-    Object.assign(this, partial);
-  }
-
-  toResponseObject() {
-    const { id, created, username } = this;
-    return { id, created, username };
-  }
+  @OneToMany(type => IdeaEntity, idea => idea.author)
+  ideas: IdeaEntity[];
 
   async comparePassword(candidatePassword: string) {
     return await compare(candidatePassword, this.password);
   }
 
-  @Expose()
-  private get token() {
+  get token() {
     const { id, username } = this;
     return jwt.sign({
-      id, username
-    },
+        id, username
+      },
       jwtSecret,
-      {expiresIn: "7d"});
+      { expiresIn: "7d" });
   }
 }
