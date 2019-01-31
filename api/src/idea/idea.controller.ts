@@ -3,12 +3,12 @@ import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, UseGuards, U
 import { IdeaService } from "./idea.service";
 import { IdeaDTO } from "./idea.dto";
 import { ValidatorPipe } from "../shared/validator.pipe";
-import { AuthGuard } from "../shared/auth.guard";
+import { AuthenticationGuard } from "../shared/authentication.guard";
 import { User } from "../user/user.decorator";
 
 @Controller("ideas")
 export class IdeaController {
-  private logger = new Logger("IdeaController");
+  private logger = new Logger("IdeaVoteUpvoteController");
 
   constructor(private ideaService: IdeaService) {
   }
@@ -31,7 +31,7 @@ export class IdeaController {
 
   @Post()
   @UsePipes(ValidatorPipe)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthenticationGuard)
   createIdea(
     @User("id") userId: string,
     @Body() data: IdeaDTO
@@ -42,10 +42,10 @@ export class IdeaController {
 
   @Patch(":id")
   @UsePipes(ValidatorPipe)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthenticationGuard)
   updateIdea(
-    @User("id") userId: string,
     @Param("id") id: string,
+    @User("id") userId: string,
     @Body() data: Partial<IdeaDTO>
   ) {
     this.logData({ id, userId, data });
@@ -53,7 +53,7 @@ export class IdeaController {
   }
 
   @Delete(":id")
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthenticationGuard)
   deleteIdea(
     @Param("id") id: string,
     @User("id") userId: string,

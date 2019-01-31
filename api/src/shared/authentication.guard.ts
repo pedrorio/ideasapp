@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from "@nestjs/common";
 import * as jwt from "jsonwebtoken";
-import { jwtSecret } from "../config/constants";
+import { jwtSecret } from "../app.constants";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthenticationGuard implements CanActivate {
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {

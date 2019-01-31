@@ -18,7 +18,7 @@ export class IdeaService {
   }
 
   async findAllIdeas() {
-    const ideas = await this.ideaRepository.find({ relations: ["author"] });
+    const ideas = await this.ideaRepository.find({ relations: ["author", "upvotes", "downvotes"] });
 
     if (!ideas) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -28,7 +28,7 @@ export class IdeaService {
   }
 
   async findIdea(id: string) {
-    const idea = await this.ideaRepository.findOne(id, { relations: ["author"] });
+    const idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -47,7 +47,7 @@ export class IdeaService {
 
   async updateIdea(id: string, userId: string, data: Partial<IdeaDTO>) {
     const user = await this.userRepository.findOne(userId);
-    let idea = await this.ideaRepository.findOne(id, { relations: ["author"] });
+    let idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -56,13 +56,13 @@ export class IdeaService {
     IdeaPolicy.authorize(user, idea);
     await this.ideaRepository.update(id, data);
 
-    idea = await this.ideaRepository.findOne(id, {relations: ["author"]});
+    idea = await this.ideaRepository.findOne(id, {relations: ["author", "upvotes", "downvotes"]});
     return IdeaRO.fromIdea(idea);
   }
 
   async deleteIdea(id: string, userId: string) {
     const user = await this.userRepository.findOne(userId);
-    const idea = await this.ideaRepository.findOne(id, { relations: ["author"] });
+    const idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);

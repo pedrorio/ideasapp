@@ -2,15 +2,15 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinTable, ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
 import { compare, hash } from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { jwtSecret } from "../config/constants";
 import { IdeaEntity } from "../idea/idea.entity";
+import { jwtSecret } from "../app.constants";
 
 @Entity("user")
 export class UserEntity {
@@ -33,13 +33,17 @@ export class UserEntity {
   @Column("text")
   password: string;
 
+  @OneToMany(type => IdeaEntity, idea => idea.author)
+  ideas: IdeaEntity[];
+
+  @ManyToMany(type => IdeaEntity, { cascade: true })
+  @JoinTable()
+  bookmarks: IdeaEntity[];
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await hash(this.password, 10);
   }
-
-  @OneToMany(type => IdeaEntity, idea => idea.author)
-  ideas: IdeaEntity[];
 
   async comparePassword(candidatePassword: string) {
     return await compare(candidatePassword, this.password);

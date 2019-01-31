@@ -10,10 +10,9 @@ export class IdeaPolicy {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
     }
 
-    if (JSON.stringify(userEntity) !== JSON.stringify(ideaEntity)) {
+    if (JSON.stringify(userEntity) !== JSON.stringify(ideaEntity.author)) {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
   }
-
 }

@@ -1,5 +1,5 @@
-import { UserEntity } from "../user.entity";
-import { IdeaRO } from "../../idea/idea.ro";
+import { IdeaRO } from "../idea/idea.ro";
+import { UserEntity } from "./user.entity";
 
 export class UserRO {
   id: string;
@@ -9,6 +9,7 @@ export class UserRO {
   username: string;
 
   ideas?: IdeaRO[];
+  bookmarks?: IdeaRO[];
 
   static fromUser(userEntity: UserEntity) {
     const { id, created, updated, username } = userEntity;
@@ -22,6 +23,10 @@ export class UserRO {
 
     if (userEntity.ideas) {
       userRO.ideas = userEntity.ideas.map(idea => IdeaRO.fromIdea(idea));
+    }
+
+    if (userEntity.bookmarks) {
+      userRO.bookmarks = userEntity.bookmarks.map(bookmark => IdeaRO.fromIdea(bookmark));
     }
 
     return userRO;

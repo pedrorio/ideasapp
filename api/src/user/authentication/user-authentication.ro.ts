@@ -1,6 +1,6 @@
 import { UserEntity } from "../user.entity";
 
-export class AuthRO {
+export class UserAuthenticationRO {
   id: string;
   username: string;
   created: Date;
@@ -9,13 +9,13 @@ export class AuthRO {
   static fromUser(userEntity: UserEntity) {
     const { id, created, username, token } = userEntity;
 
-    const authRO: AuthRO = {
+    const userAuthenticationRO: UserAuthenticationRO = {
       id,
       created,
       username,
       token
     };
 
-    return authRO;
+    return userAuthenticationRO;
   }
 }

@@ -1,5 +1,5 @@
 import { IdeaEntity } from "./idea.entity";
-import { UserRO } from "../user/ro";
+import { UserRO } from "../user/user.ro";
 
 export class IdeaRO {
   id: string;
@@ -10,6 +10,8 @@ export class IdeaRO {
   description: string;
 
   author?: UserRO;
+  upvotes?: number;
+  downvotes?: number;
 
   static fromIdea(ideaEntity: IdeaEntity) {
     const {
@@ -22,6 +24,14 @@ export class IdeaRO {
 
     if (ideaEntity.author) {
       ideaRO.author = UserRO.fromUser(ideaEntity.author);
+    }
+
+    if (ideaEntity.downvotes) {
+      ideaRO.downvotes = ideaEntity.downvotes.map(downvote => UserRO.fromUser(downvote)).length;
+    }
+
+    if (ideaEntity.upvotes) {
+      ideaRO.upvotes = ideaEntity.upvotes.map(upvote => UserRO.fromUser(upvote)).length;
     }
 
     return ideaRO;
