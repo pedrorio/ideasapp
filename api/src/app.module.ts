@@ -1,19 +1,19 @@
 import { Module } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
-
 import { ValidatorPipe } from "./shared/validator.pipe";
 import { LoggerInterceptor } from "./shared/logger.interceptor";
 import { HttpErrorException } from "./shared/http-error.exception";
-
 import { UserModule } from "./user/user.module";
 import { IdeaModule } from "./idea/idea.module";
+import { CommentModule } from "./comment/comment.module";
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     IdeaModule,
-    UserModule
+    UserModule,
+    CommentModule
   ],
   providers: [
     {

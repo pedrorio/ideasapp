@@ -12,7 +12,11 @@ import { IdeaVoteModule } from "./vote/idea-vote.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([IdeaEntity, UserEntity]),
+    TypeOrmModule.forFeature(
+      [
+        IdeaEntity,
+        UserEntity
+      ]),
     IdeaBookmarkModule,
     IdeaVoteModule
   ],
