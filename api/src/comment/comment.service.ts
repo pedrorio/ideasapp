@@ -18,18 +18,18 @@ export class CommentService {
   ) {
   }
 
-  async findAllComments() {
-    const comments = await this.commentRepository.find({ relations: ["author", "upvotes", "downvotes"] });
-
-    if (!comments) {
-      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
-    }
+  async findAllComments(page: number = 1) {
+    const comments = await this.commentRepository.find({
+      relations: ["author", "idea"],
+      take: 25,
+      skip: 25 * (page - 1)
+    });
 
     return comments.map(comment => CommentRO.fromComment(comment));
   }
 
   async findComment(id: string) {
-    const comment = await this.commentRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    const comment = await this.commentRepository.findOne(id, { relations: ["author", "idea"] });
 
     if (!comment) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -48,7 +48,7 @@ export class CommentService {
 
   async updateComment(id: string, userId: string, data: Partial<CommentDTO>) {
     const user = await this.userRepository.findOne(userId);
-    let comment = await this.commentRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    let comment = await this.commentRepository.findOne(id, { relations: ["author", "idea"] });
 
     if (!comment) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -57,13 +57,13 @@ export class CommentService {
     CommentPolicy.authorize(user, comment);
     await this.commentRepository.update(id, data);
 
-    comment = await this.commentRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    comment = await this.commentRepository.findOne(id, { relations: ["author", "idea"] });
     return CommentRO.fromComment(comment);
   }
 
   async deleteComment(id: string, userId: string) {
     const user = await this.userRepository.findOne(userId);
-    const comment = await this.commentRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    const comment = await this.commentRepository.findOne(id, { relations: ["author", "idea"] });
 
     if (!comment) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);

@@ -17,12 +17,12 @@ export class UserService {
   ) {
   }
 
-  async findAllUsers() {
-    const users = await this.userRepository.find({ relations: ["ideas", "bookmarks"] });
-
-    if (!users) {
-      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
-    }
+  async findAllUsers(page: number = 1) {
+    const users = await this.userRepository.find({
+      relations: ["ideas", "bookmarks"],
+      take: 25,
+      skip: 25 * (page - 1)
+    });
 
     return users.map(user => UserRO.fromUser(user));
   }

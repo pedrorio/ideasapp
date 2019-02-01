@@ -6,7 +6,7 @@ import { User } from "../../../user/user.decorator";
 
 @Controller("ideas")
 export class IdeaVoteDownvoteController {
-  private logger = new Logger("IdeaVoteUpvoteController");
+  private logger = new Logger("IdeaVoteDownvoteController");
 
   constructor(private ideaVoteDownvoteService: IdeaVoteDownvoteService) {}
 

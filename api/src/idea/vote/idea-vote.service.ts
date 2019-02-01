@@ -19,7 +19,7 @@ export class IdeaVoteService {
   async voteIdea(id: string, userId: string, vote: IdeaVote) {
     const idea = await this.ideaRepository.findOne(
       id,
-      { relations: ["author", "upvotes", "downvotes"] }
+      { relations: ["author", "upvotes", "downvotes", "comments"] }
     );
 
     if (!idea) {

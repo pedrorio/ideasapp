@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, UseGuards, UsePipes } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, UseGuards, UsePipes } from "@nestjs/common";
 
 import { IdeaService } from "./idea.service";
 import { IdeaDTO } from "./idea.dto";
@@ -20,8 +20,8 @@ export class IdeaController {
   }
 
   @Get()
-  findAllIdeas() {
-    return this.ideaService.findAllIdeas();
+  findAllIdeas(@Query("page") page: number) {
+    return this.ideaService.findAllIdeas(page);
   }
 
   @Get(":id")

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, UseGuards, UsePipes } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, UseGuards, UsePipes } from "@nestjs/common";
 import { CommentDTO } from "./comment.dto";
 import { ValidatorPipe } from "./../shared/validator.pipe";
 import { AuthenticationGuard } from "./../shared/authentication.guard";
@@ -7,7 +7,7 @@ import { CommentService } from "./comment.service";
 
 @Controller("comments")
 export class CommentController {
-  private logger = new Logger("CommentUserController");
+  private logger = new Logger("CommentController");
 
   constructor(private commentService: CommentService) {
   }
@@ -19,8 +19,8 @@ export class CommentController {
   }
 
   @Get()
-  findAllComments() {
-    return this.commentService.findAllComments();
+  findAllComments(@Query("page") page: number) {
+    return this.commentService.findAllComments(page);
   }
 
   @Get(":id")

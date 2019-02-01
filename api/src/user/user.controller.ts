@@ -1,6 +1,6 @@
 import {
   Controller, Get,
-  Param
+  Param, Query
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 
@@ -9,8 +9,8 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  findAllUsers() {
-    return this.userService.findAllUsers();
+  findAllUsers(@Query("page") page: number) {
+    return this.userService.findAllUsers(page);
   }
 
   @Get(":username")

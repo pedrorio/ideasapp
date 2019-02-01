@@ -17,12 +17,12 @@ export class IdeaService {
   ) {
   }
 
-  async findAllIdeas() {
-    const ideas = await this.ideaRepository.find({ relations: ["author", "upvotes", "downvotes"] });
-
-    if (!ideas) {
-      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
-    }
+  async findAllIdeas(page: number = 1) {
+    const ideas = await this.ideaRepository.find({
+      relations: ["author", "upvotes", "downvotes", "comments"],
+      take: 25,
+      skip: 25 * (page - 1)
+    });
 
     return ideas.map(idea => IdeaRO.fromIdea(idea));
   }

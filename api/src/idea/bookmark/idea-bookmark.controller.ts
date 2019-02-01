@@ -6,7 +6,7 @@ import { AuthenticationGuard } from "../../shared/authentication.guard";
 
 @Controller("ideas")
 export class IdeaBookmarkController {
-  private logger = new Logger("IdeaVoteUpvoteController");
+  private logger = new Logger("IdeaBookmarkController");
 
   constructor(private ideaBookmarkService: IdeaBookmarkService) {
   }

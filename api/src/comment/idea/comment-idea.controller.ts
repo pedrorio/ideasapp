@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Param } from "@nestjs/common";
+import { Controller, Get, Logger, Param, Query } from "@nestjs/common";
 import { CommentIdeaService } from "./comment-idea.service";
 
 @Controller("comments")
@@ -15,8 +15,8 @@ export class CommentIdeaController {
   }
 
   @Get("idea/:id")
-  findAllCommentsByUsers(@Param("id") id: string) {
-    return this.commentIdeaService.findAllCommentsByIdea(id);
+  findAllCommentsByUsers(@Param("id") id: string, @Query("page") page: number) {
+    return this.commentIdeaService.findAllCommentsByIdea(id, page);
   }
 
 }

@@ -16,14 +16,19 @@ export class CommentUserService {
   ) {
   }
 
-  async findAllCommentsByUser(id: string) {
+  async findAllCommentsByUser(id: string, page: number = 1) {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
     }
 
-    const comments = await this.commentRepository.find({ where: { author: user }, relations: ["author", "idea"] });
+    const comments = await this.commentRepository.find({
+      where: { author: user },
+      relations: ["author", "idea"],
+      take: 25,
+      skip: 25 * (page - 1)
+    });
 
     return comments.map(comment => CommentRO.fromComment(comment));
   }

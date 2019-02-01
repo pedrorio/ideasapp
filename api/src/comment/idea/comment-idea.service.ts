@@ -16,14 +16,19 @@ export class CommentIdeaService {
   ) {
   }
 
-  async findAllCommentsByIdea(id: string) {
+  async findAllCommentsByIdea(id: string, page: number = 1) {
     const idea = await this.ideaRepository.findOne(id);
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
     }
 
-    const comments = await this.commentRepository.find({ where: { idea }, relations: ["author", "idea"] });
+    const comments = await this.commentRepository.find({
+      where: { idea },
+      relations: ["author", "idea"],
+      take: 25,
+      skip: 25 * (page - 1)
+    });
 
     return comments.map(comment => CommentRO.fromComment(comment));
   }
