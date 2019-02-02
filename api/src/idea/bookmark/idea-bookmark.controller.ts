@@ -3,8 +3,11 @@ import { Controller, Delete, Logger, Param, Post, UseGuards } from "@nestjs/comm
 import { IdeaBookmarkService } from "./idea-bookmark.service";
 import { User } from "../../user/user.decorator";
 import { UserAuthenticationGuard } from "../../user/authentication/user-authentication.guard";
+import { ApiUseTags, ApiOperation, ApiForbiddenResponse, ApiCreatedResponse, ApiBearerAuth, ApiNotFoundResponse,
+  ApiOkResponse } from "@nestjs/swagger";
 
 @Controller("ideas")
+@ApiUseTags("Bookmark Idea")
 export class IdeaBookmarkController {
   private logger = new Logger("IdeaBookmarkController");
 
@@ -19,6 +22,11 @@ export class IdeaBookmarkController {
 
   @Post(":id/bookmark")
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Bookmark a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiNotFoundResponse({ description: "The specific idea was not found." })
+  @ApiCreatedResponse({ description: "Created a specific bookmark on a specific idea." })
   bookmarkIdea(
     @Param("id") id: string,
     @User("id") userId: string
@@ -29,6 +37,11 @@ export class IdeaBookmarkController {
 
   @Delete(":id/bookmark")
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Unbookmark a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiNotFoundResponse({ description: "The specific idea was not found." })
+  @ApiOkResponse({ description: "Deleted a specific bookmark on a specific idea." })
   unbookmarkIdea(
     @Param("id") id: string,
     @User("id") userId: string

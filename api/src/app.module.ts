@@ -14,7 +14,6 @@ import { CommentModule } from "./comment/comment.module";
 
 import { DateScalar } from "./shared/date.scalar";
 
-
 @Module({
   imports: [
     TypeOrmModule.forRoot(),

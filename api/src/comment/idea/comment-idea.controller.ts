@@ -4,8 +4,15 @@ import { ValidatorPipe } from "../../shared/validator.pipe";
 import { UserAuthenticationGuard } from "../../user/authentication/user-authentication.guard";
 import { User } from "../../user/user.decorator";
 import { CommentDTO } from "../comment.dto";
+import {
+  ApiUseTags, ApiImplicitQuery, ApiOperation, ApiNotFoundResponse, ApiOkResponse, ApiForbiddenResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiBadRequestResponse
+} from "@nestjs/swagger";
 
 @Controller("ideas/:ideaId")
+@ApiUseTags("Idea Comments")
 export class CommentIdeaController {
   private logger = new Logger("CommentIdeaController");
 
@@ -20,6 +27,10 @@ export class CommentIdeaController {
   }
 
   @Get("comments")
+  @ApiOperation({ title: "Find all comments from a specific idea." })
+  @ApiOkResponse({ description: "Found all comments from a specific idea." })
+  @ApiNotFoundResponse({ description: "Specific idea was not found." })
+  @ApiImplicitQuery({ name: "page", required: false })
   findAllIdeaComments(
     @Param("ideaId") ideaId: string,
     @Query("page") page: number
@@ -30,6 +41,12 @@ export class CommentIdeaController {
   @Post("comments")
   @UsePipes(ValidatorPipe)
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Create a comment in a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiNotFoundResponse({ description: "The specific idea was not found." })
+  @ApiBadRequestResponse({ description: "CommentDTO validation failed." })
+  @ApiCreatedResponse({ description: "Created a comment in the specific idek." })
   createIdeaComment(
     @Param("ideaId") ideaId: string,
     @User("id") userId: string,
@@ -42,6 +59,12 @@ export class CommentIdeaController {
   @Patch("comments/:commentId")
   @UsePipes(ValidatorPipe)
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Update a specific comment in a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiNotFoundResponse({ description: "The specific idea or the specific comment was not found." })
+  @ApiBadRequestResponse({ description: "CommentDTO validation failed." })
+  @ApiOkResponse({ description: "Updated the specific comment on the specific idea." })
   updateIdeaComment(
     @Param("ideaId") ideaId: string,
     @Param("commentId") commentId: string,
@@ -54,6 +77,11 @@ export class CommentIdeaController {
 
   @Delete("comments/:commentId")
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Delete a specific comment in a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiNotFoundResponse({ description: "The specific idea or the specific comment was not found." })
+  @ApiOkResponse({ description: "Deleted the specific comment on the specific idea." })
   deleteComment(
     @Param("ideaId") ideaId: string,
     @Param("commentId") commentId: string,

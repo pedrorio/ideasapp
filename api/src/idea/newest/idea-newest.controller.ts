@@ -1,7 +1,9 @@
 import { Controller, Get, Logger, Query } from "@nestjs/common";
 import { IdeaNewestService } from "./idea-newest.service";
+import { ApiUseTags, ApiImplicitQuery, ApiOkResponse, ApiOperation } from "@nestjs/swagger";
 
 @Controller("ideas")
+@ApiUseTags("Newest Ideas")
 export class IdeaNewestController {
   private logger = new Logger("IdeaNewestController");
 
@@ -15,6 +17,9 @@ export class IdeaNewestController {
   }
 
   @Get("newest")
+  @ApiOperation({ title: "Find all newest ideas." })
+  @ApiOkResponse({ description: "Found all newest ideas." })
+  @ApiImplicitQuery({ name: "page", required: false })
   findAllNewestIdeas(@Query("page") page: number) {
     return this.ideaNewestService.findAllNewestIdeas(page);
   }

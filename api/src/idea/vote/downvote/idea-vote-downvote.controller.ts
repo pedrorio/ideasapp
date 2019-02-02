@@ -3,8 +3,12 @@ import { Controller, Logger, Param, Post, UseGuards } from "@nestjs/common";
 import { IdeaVoteDownvoteService } from "./idea-vote-downvote.service";
 import { User } from "../../../user/user.decorator";
 import { UserAuthenticationGuard } from "../../../user/authentication/user-authentication.guard";
+import { ApiUseTags, ApiOperation, ApiBearerAuth, ApiForbiddenResponse, ApiBadRequestResponse, ApiNotFoundResponse,
+  ApiCreatedResponse,
+  ApiOkResponse} from "@nestjs/swagger";
 
 @Controller("ideas")
+@ApiUseTags("Downvote Idea")
 export class IdeaVoteDownvoteController {
   private logger = new Logger("IdeaVoteDownvoteController");
 
@@ -18,6 +22,13 @@ export class IdeaVoteDownvoteController {
 
   @Post(":id/downvote")
   @UseGuards(UserAuthenticationGuard)
+  @ApiOperation({ title: "Downvote a specific idea." })
+  @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: "Invalid token or forbidden." })
+  @ApiBadRequestResponse({ description: "Unable to cast vote." })
+  @ApiNotFoundResponse({ description: "The specific idea was not found." })
+  @ApiCreatedResponse({ description: "Downvoted the specific idea." })
+  @ApiOkResponse({ description: "Deleted the existing upvote on the specific idea." })
   downvoteIdea(
     @Param("id") id: string,
     @User("id") userId: string
