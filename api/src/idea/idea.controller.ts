@@ -3,8 +3,8 @@ import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, UseGu
 import { IdeaService } from "./idea.service";
 import { IdeaDTO } from "./idea.dto";
 import { ValidatorPipe } from "../shared/validator.pipe";
-import { AuthenticationGuard } from "../shared/authentication.guard";
 import { User } from "../user/user.decorator";
+import { UserAuthenticationGuard } from "../user/authentication/user-authentication.guard";
 
 @Controller("ideas")
 export class IdeaController {
@@ -15,8 +15,8 @@ export class IdeaController {
 
   private logData(options: any) {
     options.id && this.logger.log(`IDEA ${JSON.stringify(options.id)}`);
-    options.data && this.logger.log(`DATA ${JSON.stringify(options.body)}`);
-    options.userId && this.logger.log(`USER ${JSON.stringify(options.userId)}`);
+    options.data && this.logger.log(`IDEA_DATA ${JSON.stringify(options.body)}`);
+    options.userId && this.logger.log(`USER_ID ${JSON.stringify(options.userId)}`);
   }
 
   @Get()
@@ -31,7 +31,7 @@ export class IdeaController {
 
   @Post()
   @UsePipes(ValidatorPipe)
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   createIdea(
     @User("id") userId: string,
     @Body() data: IdeaDTO
@@ -42,7 +42,7 @@ export class IdeaController {
 
   @Patch(":id")
   @UsePipes(ValidatorPipe)
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   updateIdea(
     @Param("id") id: string,
     @User("id") userId: string,
@@ -53,7 +53,7 @@ export class IdeaController {
   }
 
   @Delete(":id")
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   deleteIdea(
     @Param("id") id: string,
     @User("id") userId: string,

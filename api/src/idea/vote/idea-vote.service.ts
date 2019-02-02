@@ -33,7 +33,10 @@ export class IdeaVoteService {
     const voteCount = idea[vote].filter(voter => voter.id === user.id).length;
     const oppositeVoteCount = idea[oppositeVote].filter(voter => voter.id === user.id).length;
 
-    if (!oppositeVoteCount || !voteCount) {
+    const oppositeVoteCountFailure = !oppositeVoteCount && oppositeVoteCount !== 0;
+    const voteCountFailure = !voteCount && voteCount !== 0;
+
+    if (oppositeVoteCountFailure || voteCountFailure) {
       throw new HttpException("Unable to cast vote", HttpStatus.BAD_REQUEST);
     }
 

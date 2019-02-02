@@ -2,7 +2,7 @@ import { Controller, Delete, Logger, Param, Post, UseGuards } from "@nestjs/comm
 
 import { IdeaBookmarkService } from "./idea-bookmark.service";
 import { User } from "../../user/user.decorator";
-import { AuthenticationGuard } from "../../shared/authentication.guard";
+import { UserAuthenticationGuard } from "../../user/authentication/user-authentication.guard";
 
 @Controller("ideas")
 export class IdeaBookmarkController {
@@ -18,7 +18,7 @@ export class IdeaBookmarkController {
   }
 
   @Post(":id/bookmark")
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   bookmarkIdea(
     @Param("id") id: string,
     @User("id") userId: string
@@ -28,7 +28,7 @@ export class IdeaBookmarkController {
   }
 
   @Delete(":id/bookmark")
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   unbookmarkIdea(
     @Param("id") id: string,
     @User("id") userId: string

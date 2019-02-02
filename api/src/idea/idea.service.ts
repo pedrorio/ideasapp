@@ -19,7 +19,12 @@ export class IdeaService {
 
   async findAllIdeas(page: number = 1) {
     const ideas = await this.ideaRepository.find({
-      relations: ["author", "upvotes", "downvotes", "comments"],
+      relations: [
+        "author",
+        "upvotes",
+        "downvotes",
+        "comments"
+      ],
       take: 25,
       skip: 25 * (page - 1)
     });
@@ -28,7 +33,14 @@ export class IdeaService {
   }
 
   async findIdea(id: string) {
-    const idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    const idea = await this.ideaRepository.findOne(id, {
+      relations: [
+        "author",
+        "upvotes",
+        "downvotes",
+        "comments"
+      ]
+    });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -47,7 +59,14 @@ export class IdeaService {
 
   async updateIdea(id: string, userId: string, data: Partial<IdeaDTO>) {
     const user = await this.userRepository.findOne(userId);
-    let idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    let idea = await this.ideaRepository.findOne(id, {
+      relations: [
+        "author",
+        "upvotes",
+        "downvotes",
+        "comments"
+      ]
+    });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -56,13 +75,27 @@ export class IdeaService {
     IdeaPolicy.authorize(user, idea);
     await this.ideaRepository.update(id, data);
 
-    idea = await this.ideaRepository.findOne(id, {relations: ["author", "upvotes", "downvotes"]});
+    idea = await this.ideaRepository.findOne(id, {
+      relations: [
+        "author",
+        "upvotes",
+        "downvotes",
+        "comments"
+      ]
+    });
     return IdeaRO.fromIdea(idea);
   }
 
   async deleteIdea(id: string, userId: string) {
     const user = await this.userRepository.findOne(userId);
-    const idea = await this.ideaRepository.findOne(id, { relations: ["author", "upvotes", "downvotes"] });
+    const idea = await this.ideaRepository.findOne(id, {
+      relations: [
+        "author",
+        "upvotes",
+        "downvotes",
+        "comments"
+      ]
+    });
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);

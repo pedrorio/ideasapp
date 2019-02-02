@@ -11,6 +11,7 @@ import { compare, hash } from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { IdeaEntity } from "../idea/idea.entity";
 import { jwtSecret } from "../app.constants";
+import { CommentEntity } from "../comment/comment.entity";
 
 @Entity("user")
 export class UserEntity {
@@ -39,6 +40,9 @@ export class UserEntity {
   @ManyToMany(type => IdeaEntity, { cascade: true })
   @JoinTable()
   bookmarks: IdeaEntity[];
+
+  @OneToMany(type => CommentEntity, comment => comment.author)
+  comments: CommentEntity[];
 
   @BeforeInsert()
   async hashPassword() {

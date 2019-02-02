@@ -1,5 +1,6 @@
 import { IdeaEntity } from "./idea.entity";
 import { UserRO } from "../user/user.ro";
+import { CommentRO } from "../comment/comment.ro";
 
 export class IdeaRO {
   id: string;
@@ -12,6 +13,8 @@ export class IdeaRO {
   author?: UserRO;
   upvotes?: number;
   downvotes?: number;
+
+  comments?: CommentRO[];
 
   static fromIdea(ideaEntity: IdeaEntity) {
     const {
@@ -32,6 +35,10 @@ export class IdeaRO {
 
     if (ideaEntity.upvotes) {
       ideaRO.upvotes = ideaEntity.upvotes.map(upvote => UserRO.fromUser(upvote)).length;
+    }
+
+    if (ideaEntity.comments) {
+      ideaRO.comments = ideaEntity.comments.map(comment => CommentRO.fromComment(comment));
     }
 
     return ideaRO;

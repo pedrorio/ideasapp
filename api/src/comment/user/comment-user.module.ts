@@ -6,7 +6,6 @@ import { UserEntity } from "../../user/user.entity";
 import { CommentEntity } from "../comment.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature(

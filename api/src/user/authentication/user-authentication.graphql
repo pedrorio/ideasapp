@@ -1,0 +1,17 @@
+type UserAuthentication {
+    id: ID!
+    username: String!
+
+#    created: Date!
+#    updated: Date!
+    created: String!
+    updated: String!
+
+    token: String!
+}
+
+
+input UserAuthenticationInput {
+    username: String!
+    password: String!
+}

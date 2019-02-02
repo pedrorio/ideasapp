@@ -5,6 +5,8 @@ import { IdeaEntity } from "../../idea/idea.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CommentEntity } from "../comment.entity";
 import { CommentModule } from "../comment.module";
+import { UserEntity } from "../../user/user.entity";
+import { UserAuthenticationRegistrationService } from "../../user/authentication/registration/user-authentication-registration.service";
 
 
 @Module({
@@ -12,14 +14,19 @@ import { CommentModule } from "../comment.module";
     TypeOrmModule.forFeature(
       [
         IdeaEntity,
-        CommentEntity
+        CommentEntity,
+        UserEntity
       ]
     ),
     forwardRef(() => CommentModule)
-    // because of RO
   ],
-  controllers: [CommentIdeaController],
-  providers: [CommentIdeaService],
+  controllers: [
+    CommentIdeaController
+  ],
+  providers: [
+    CommentIdeaService,
+    UserAuthenticationRegistrationService
+  ],
 })
 export class CommentIdeaModule {
 }

@@ -16,8 +16,8 @@ export class CommentUserService {
   ) {
   }
 
-  async findAllCommentsByUser(id: string, page: number = 1) {
-    const user = await this.userRepository.findOne(id);
+  async findAllUserComments(userId: string, page: number = 1) {
+    const user = await this.userRepository.findOne(userId);
 
     if (!user) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);

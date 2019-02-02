@@ -9,18 +9,33 @@ import { UserEntity } from "../user/user.entity";
 
 import { IdeaBookmarkModule } from "./bookmark/idea-bookmark.module";
 import { IdeaVoteModule } from "./vote/idea-vote.module";
+import { IdeaResolver } from "./idea.resolver";
+import { CommentService } from "../comment/comment.service";
+import { CommentEntity } from "../comment/comment.entity";
+import { UserService } from "../user/user.service";
+import { UserAuthenticationRegistrationService } from "../user/authentication/registration/user-authentication-registration.service";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature(
       [
         IdeaEntity,
-        UserEntity
-      ]),
+        UserEntity,
+        CommentEntity
+      ]
+    ),
     IdeaBookmarkModule,
     IdeaVoteModule
   ],
-  controllers: [IdeaController],
-  providers: [IdeaService]
+  controllers: [
+    IdeaController
+  ],
+  providers: [
+    IdeaService,
+    IdeaResolver,
+    CommentService,
+    UserService,
+    UserAuthenticationRegistrationService
+  ]
 })
 export class IdeaModule {}

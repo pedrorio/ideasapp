@@ -1,0 +1,7 @@
+type Mutation {
+    loginUser(data: UserAuthenticationInput!): UserAuthentication!
+}
+
+type Query {
+    findMe: UserAuthentication!
+}

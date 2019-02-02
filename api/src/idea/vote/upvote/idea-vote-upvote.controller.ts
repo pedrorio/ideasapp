@@ -1,8 +1,8 @@
 import { Controller, Logger, Param, Post, UseGuards } from "@nestjs/common";
 
 import { IdeaVoteUpvoteService } from "./idea-vote-upvote.service";
-import { AuthenticationGuard } from "../../../shared/authentication.guard";
 import { User } from "../../../user/user.decorator";
+import { UserAuthenticationGuard } from "../../../user/authentication/user-authentication.guard";
 
 @Controller("ideas")
 export class IdeaVoteUpvoteController {
@@ -18,7 +18,7 @@ export class IdeaVoteUpvoteController {
   }
 
   @Post(":id/upvote")
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   upvoteIdea(
     @Param("id") id: string,
     @User("id") userId: string

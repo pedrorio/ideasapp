@@ -5,14 +5,25 @@ import { IdeaVoteService } from "./idea-vote.service";
 import { UserEntity } from "../../user/user.entity";
 import { IdeaEntity } from "../idea.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserService } from "../../user/user.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, IdeaEntity]),
+    TypeOrmModule.forFeature(
+      [
+        UserEntity,
+        IdeaEntity
+      ]
+    ),
     IdeaVoteUpvoteModule,
     IdeaVoteDownvoteModule
   ],
-  providers: [IdeaVoteService],
-  exports: [IdeaVoteService]
+  providers: [
+    IdeaVoteService,
+    UserService
+  ],
+  exports: [
+    IdeaVoteService
+  ]
 })
 export class IdeaVoteModule {}

@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   Column,
   ManyToOne,
-  JoinTable, UpdateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 import { UserEntity } from "../user/user.entity";
@@ -24,8 +24,7 @@ export class CommentEntity {
   @Column("text")
   comment: string;
 
-  @ManyToOne(type => UserEntity)
-  @JoinTable()
+  @ManyToOne(type => UserEntity, user => user.comments)
   author: UserEntity;
 
   @ManyToOne(type => IdeaEntity, idea => idea.comments)

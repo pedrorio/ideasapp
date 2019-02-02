@@ -6,13 +6,23 @@ import { UserAuthenticationRegistrationController } from "./user-authentication-
 
 import { UserEntity } from "../../user.entity";
 import { UserModule } from "../../user.module";
+import { UserAuthenticationRegistrationResolver } from "./user-authentication-registration.resolver";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     forwardRef(() => UserModule)
   ],
-  controllers: [UserAuthenticationRegistrationController],
-  providers: [UserAuthenticationRegistrationService]
+  controllers: [
+    UserAuthenticationRegistrationController
+  ],
+  providers: [
+    UserAuthenticationRegistrationService
+  ],
+  exports: [
+    UserAuthenticationRegistrationService,
+    UserAuthenticationRegistrationResolver
+  ]
 })
-export class UserAuthenticationRegistrationModule {}
+export class UserAuthenticationRegistrationModule {
+}

@@ -1,0 +1,14 @@
+type Comment {
+    id: ID!
+
+    #    created: Date!
+    #    updated: Date!
+    created: String!
+    updated: String!
+
+    comment: String!
+
+    author: User!
+
+    idea: Idea!
+}

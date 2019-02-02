@@ -8,7 +8,7 @@ import { User } from "../../user.decorator";
 import { UserService } from "../../user.service";
 import { ValidatorPipe } from "../../../shared/validator.pipe";
 import { UserDTO } from "../../user.dto";
-import { AuthenticationGuard } from "../../../shared/authentication.guard";
+import { UserAuthenticationGuard } from "../user-authentication.guard";
 
 @Controller("auth")
 export class UserAuthenticationSessionController {
@@ -18,7 +18,7 @@ export class UserAuthenticationSessionController {
   ) {}
 
   @Get("me")
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(UserAuthenticationGuard)
   findSession(@User("username") username: string) {
     return this.userService.findUser(username);
   }

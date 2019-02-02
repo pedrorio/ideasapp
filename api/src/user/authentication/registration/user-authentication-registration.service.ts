@@ -31,4 +31,18 @@ export class UserAuthenticationRegistrationService {
 
     return UserAuthenticationRO.fromUser(user);
   }
+
+  async findRegistration(username: string) {
+    const user = await this.userRepository.findOne({ username });
+
+    if (!user) {
+      throw new HttpException(
+        "Invalid Token",
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    return UserAuthenticationRO.fromUser(user);
+
+  }
 }

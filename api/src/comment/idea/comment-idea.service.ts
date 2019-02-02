@@ -5,6 +5,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CommentEntity } from "../comment.entity";
 import { CommentRO } from "../comment.ro";
 import { IdeaEntity } from "../../idea/idea.entity";
+import { CommentDTO } from "../comment.dto";
+import { UserEntity } from "../../user/user.entity";
+import { CommentPolicy } from "../comment.policy";
 
 @Injectable()
 export class CommentIdeaService {
@@ -12,12 +15,14 @@ export class CommentIdeaService {
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
     @InjectRepository(IdeaEntity)
-    private ideaRepository: Repository<IdeaEntity>
+    private ideaRepository: Repository<IdeaEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>
   ) {
   }
 
-  async findAllCommentsByIdea(id: string, page: number = 1) {
-    const idea = await this.ideaRepository.findOne(id);
+  async findAllIdeaComments(ideaId: string, page: number = 1) {
+    const idea = await this.ideaRepository.findOne(ideaId);
 
     if (!idea) {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -31,6 +36,83 @@ export class CommentIdeaService {
     });
 
     return comments.map(comment => CommentRO.fromComment(comment));
+  }
+
+  async createIdeaComment(ideaId: string, userId: string, data: CommentDTO) {
+
+    const idea = await this.ideaRepository.findOne(ideaId);
+
+    if (!idea) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userRepository.findOne(userId);
+    const comment = await this.commentRepository.create(
+      { ...data, idea, author: user }
+    );
+
+    await this.commentRepository.save(comment);
+    return CommentRO.fromComment(comment);
+  }
+
+  async updateIdeaComment(
+    ideaId: string,
+    commentId: string,
+    userId: string,
+    data: Partial<CommentDTO>
+  ) {
+    const idea = await this.ideaRepository.findOne(ideaId);
+
+    if (!idea) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userRepository.findOne(userId);
+
+    let comment = await this.commentRepository.findOne(
+      commentId,
+      { relations: ["author", "idea"] }
+    );
+
+    if (!comment) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    CommentPolicy.authorize(user, comment);
+    await this.commentRepository.update(
+      commentId,
+      { ...data, idea, author: user }
+    );
+
+    comment = await this.commentRepository.findOne(
+      commentId,
+      { relations: ["author", "idea"] }
+    );
+    return CommentRO.fromComment(comment);
+  }
+
+  async deleteIdeaComment(
+    ideaId: string,
+    commentId: string,
+    userId: string,
+  ) {
+    const idea = await this.ideaRepository.findOne(ideaId);
+
+    if (!idea) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userRepository.findOne(userId);
+    const comment = await this.commentRepository.findOne(commentId, { relations: ["author", "idea"] });
+
+    if (!comment) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    CommentPolicy.authorize(user, comment);
+    await this.commentRepository.delete(commentId);
+
+    return CommentRO.fromComment(comment);
   }
 
 }

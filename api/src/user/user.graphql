@@ -1,0 +1,20 @@
+type User {
+    id: ID!
+    username: String!
+
+#    created: Date!
+#    updated: Date!
+    created: String!
+    updated: String!
+
+    ideas: [Idea!]!
+
+    bookmarks: [Idea!]
+
+    comments: [Comment!]
+}
+
+type Query {
+    users(page: Int): [User!]
+    user(username: String): [User!]
+}

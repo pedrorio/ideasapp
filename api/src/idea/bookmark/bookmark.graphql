@@ -1,0 +1,4 @@
+type Mutation {
+    bookmarkIdea(id: ID!): Idea!
+    unbookmarkIdea(id: ID!): Idea!
+}

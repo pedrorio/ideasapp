@@ -1,0 +1,23 @@
+type Idea {
+    id: ID!
+
+#    created: Date!
+#    updated: Date!
+    created: String!
+    updated: String!
+
+    idea: String!
+    description: String!
+
+    author: User!
+
+    upvotes: Int!
+    downvotes: Int!
+
+    comments: [Comment!]
+}
+
+type Query {
+    ideas(page: Int): [Idea!]
+    idea(id: ID): Idea!
+}
