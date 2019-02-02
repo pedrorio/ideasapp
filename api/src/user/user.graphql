@@ -2,10 +2,8 @@ type User {
     id: ID!
     username: String!
 
-#    created: Date!
-#    updated: Date!
-    created: String!
-    updated: String!
+    created: Date!
+    updated: Date!
 
     ideas: [Idea!]!
 

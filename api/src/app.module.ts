@@ -12,6 +12,8 @@ import { UserModule } from "./user/user.module";
 import { IdeaModule } from "./idea/idea.module";
 import { CommentModule } from "./comment/comment.module";
 
+import { DateScalar } from "./shared/date.scalar";
+
 
 @Module({
   imports: [
@@ -36,7 +38,8 @@ import { CommentModule } from "./comment/comment.module";
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggerInterceptor
-    }
+    },
+    DateScalar
   ],
 })
 export class AppModule {
