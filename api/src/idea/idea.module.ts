@@ -1,19 +1,17 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { UserEntity } from "../user/user.entity";
+import { IdeaEntity } from "./idea.entity";
+import { CommentEntity } from "../comment/comment.entity";
+
 import { IdeaController } from "./idea.controller";
 import { IdeaService } from "./idea.service";
-
-import { IdeaEntity } from "./idea.entity";
-import { UserEntity } from "../user/user.entity";
+import { IdeaResolver } from "./idea.resolver";
 
 import { IdeaBookmarkModule } from "./bookmark/idea-bookmark.module";
 import { IdeaVoteModule } from "./vote/idea-vote.module";
-import { IdeaResolver } from "./idea.resolver";
-import { CommentService } from "../comment/comment.service";
-import { CommentEntity } from "../comment/comment.entity";
-import { UserService } from "../user/user.service";
-import { UserAuthenticationRegistrationService } from "../user/authentication/registration/user-authentication-registration.service";
+import { UserAuthenticationModule } from "../user/authentication/user-authentication.module";
 
 @Module({
   imports: [
@@ -25,17 +23,15 @@ import { UserAuthenticationRegistrationService } from "../user/authentication/re
       ]
     ),
     IdeaBookmarkModule,
-    IdeaVoteModule
+    IdeaVoteModule,
+    UserAuthenticationModule
   ],
   controllers: [
     IdeaController
   ],
   providers: [
     IdeaService,
-    IdeaResolver,
-    CommentService,
-    UserService,
-    UserAuthenticationRegistrationService
+    IdeaResolver
   ]
 })
 export class IdeaModule {}

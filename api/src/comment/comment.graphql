@@ -12,3 +12,8 @@ type Comment {
 
     idea: Idea!
 }
+
+type Query {
+    comments(page: Int): [Comment!]
+    comment(id: ID!): Comment!
+}

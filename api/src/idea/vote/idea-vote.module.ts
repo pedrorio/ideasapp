@@ -5,7 +5,6 @@ import { IdeaVoteService } from "./idea-vote.service";
 import { UserEntity } from "../../user/user.entity";
 import { IdeaEntity } from "../idea.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserService } from "../../user/user.service";
 
 @Module({
   imports: [
@@ -19,8 +18,7 @@ import { UserService } from "../../user/user.service";
     IdeaVoteDownvoteModule
   ],
   providers: [
-    IdeaVoteService,
-    UserService
+    IdeaVoteService
   ],
   exports: [
     IdeaVoteService

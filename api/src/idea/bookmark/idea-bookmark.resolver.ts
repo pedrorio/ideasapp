@@ -1,6 +1,8 @@
 import { Resolver, Args, Mutation, Context } from "@nestjs/graphql";
 import { IdeaBookmarkService } from "./idea-bookmark.service";
 import { UserAuthenticationRO } from "../../user/authentication/user-authentication.ro";
+import { UseGuards } from "@nestjs/common";
+import { UserAuthenticationGuard } from "../../user/authentication/user-authentication.guard";
 
 @Resolver("Idea")
 export class IdeaBookmarkResolver {
@@ -9,7 +11,8 @@ export class IdeaBookmarkResolver {
   }
 
   @Mutation()
-  bookmark(
+  @UseGuards(UserAuthenticationGuard)
+  bookmarkIdea(
     @Args("id")id: string,
     @Context("user") user: UserAuthenticationRO
   ) {
@@ -18,7 +21,8 @@ export class IdeaBookmarkResolver {
   }
 
   @Mutation()
-  unbookmark(
+  @UseGuards(UserAuthenticationGuard)
+  unbookmarkIdea(
     @Args("id")id: string,
     @Context("user") user: UserAuthenticationRO
   ) {

@@ -1,29 +1,37 @@
-import { forwardRef, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
+import { UserController } from "./user.controller";
+import { UserResolver } from "./user.resolver";
 import { UserEntity } from "./user.entity";
 
 import { IdeaEntity } from "../idea/idea.entity";
-
-import { UserAuthenticationModule } from "./authentication/user-authentication.module";
-import { UserResolver } from "./user.resolver";
-import { CommentService } from "../comment/comment.service";
 import { CommentEntity } from "../comment/comment.entity";
+
+import { IdeaModule } from "../idea/idea.module";
+import { CommentModule } from "../comment/comment.module";
+import { UserAuthenticationModule } from "./authentication/user-authentication.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, IdeaEntity, CommentEntity]),
-    forwardRef(() => UserAuthenticationModule)
+    TypeOrmModule.forFeature(
+      [
+        UserEntity,
+        IdeaEntity,
+        CommentEntity
+      ]
+    ),
+    IdeaModule,
+    CommentModule,
+    UserAuthenticationModule
   ],
   controllers: [
     UserController
   ],
   providers: [
     UserService,
-    UserResolver,
-    CommentService
+    UserResolver
   ],
   exports: [
     UserService

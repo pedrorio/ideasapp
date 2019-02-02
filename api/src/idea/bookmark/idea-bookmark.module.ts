@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { IdeaBookmarkController } from "./idea-bookmark.controller";
-import { IdeaBookmarkService } from "./idea-bookmark.service";
-
 import { IdeaEntity } from "../idea.entity";
 import { UserEntity } from "../../user/user.entity";
-import { UserService } from "../../user/user.service";
-import { UserAuthenticationRegistrationService } from "../../user/authentication/registration/user-authentication-registration.service";
+
+import { IdeaBookmarkController } from "./idea-bookmark.controller";
+import { IdeaBookmarkService } from "./idea-bookmark.service";
 import { IdeaBookmarkResolver } from "./idea-bookmark.resolver";
+
+import { UserAuthenticationModule } from "../../user/authentication/user-authentication.module";
 
 @Module({
   imports: [
@@ -17,14 +17,14 @@ import { IdeaBookmarkResolver } from "./idea-bookmark.resolver";
         IdeaEntity,
         UserEntity
       ]
-    )],
+    ),
+    UserAuthenticationModule
+  ],
   controllers: [
     IdeaBookmarkController
   ],
   providers: [
     IdeaBookmarkService,
-    UserService,
-    UserAuthenticationRegistrationService,
     IdeaBookmarkResolver
   ]
 })

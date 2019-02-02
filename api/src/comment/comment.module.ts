@@ -7,8 +7,7 @@ import { CommentController } from "./comment.controller";
 import { CommentService } from "./comment.service";
 import { CommentUserModule } from "./user/comment-user.module";
 import { CommentIdeaModule } from "./idea/comment-idea.module";
-import { UserService } from "../user/user.service";
-import { UserAuthenticationRegistrationService } from "../user/authentication/registration/user-authentication-registration.service";
+import { CommentResolver } from "./comment.resolver";
 
 @Module({
   imports: [
@@ -27,11 +26,7 @@ import { UserAuthenticationRegistrationService } from "../user/authentication/re
   ],
   providers: [
     CommentService,
-    UserService,
-    UserAuthenticationRegistrationService
-  ],
-  exports: [
-    CommentService
+    CommentResolver
   ]
 })
 export class CommentModule {

@@ -1,0 +1,13 @@
+type Query {
+    ideaComments(ideaId: ID!, page: Int): [Comment!]
+}
+
+type Mutation {
+    createIdeaComment(ideaId: ID!, data: CommentInput!): Comment!
+    updateIdeaComment(ideaId: ID!, commentId: ID!, data: CommentInput!): Comment!
+    deleteIdeaComment(ideaId: ID!, commentId: ID!): Comment!
+}
+
+input CommentInput {
+    comment: String!
+}

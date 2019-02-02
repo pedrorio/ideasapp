@@ -19,5 +19,16 @@ type Idea {
 
 type Query {
     ideas(page: Int): [Idea!]
-    idea(id: ID): Idea!
+    idea(id: ID!): Idea!
+}
+
+type Mutation {
+    createIdea(data: IdeaInput!): Idea!
+    updateIdea(id: ID!, data: IdeaInput!): Idea!
+    deleteIdea(id: ID!): Idea!
+}
+
+input IdeaInput {
+    idea: String!
+    description: String!
 }

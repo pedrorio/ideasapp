@@ -1,27 +1,30 @@
-import { forwardRef, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserAuthenticationRegistrationService } from "./user-authentication-registration.service";
 import { UserAuthenticationRegistrationController } from "./user-authentication-registration.controller";
+import { UserAuthenticationRegistrationResolver } from "./user-authentication-registration.resolver";
 
 import { UserEntity } from "../../user.entity";
-import { UserModule } from "../../user.module";
-import { UserAuthenticationRegistrationResolver } from "./user-authentication-registration.resolver";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
-    forwardRef(() => UserModule)
+    TypeOrmModule.forFeature(
+      [
+        UserEntity
+      ]
+    ),
   ],
   controllers: [
     UserAuthenticationRegistrationController
   ],
   providers: [
-    UserAuthenticationRegistrationService
-  ],
-  exports: [
     UserAuthenticationRegistrationService,
     UserAuthenticationRegistrationResolver
+  ],
+  exports: [
+    // Required in UserAuthenticationGuard
+    UserAuthenticationRegistrationService
   ]
 })
 export class UserAuthenticationRegistrationModule {
